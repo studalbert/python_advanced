@@ -1,0 +1,5 @@
+total 12
+drwxrwxr-x 2 user user 4096 Oct 31 23:29 empty
+-rw-rw-r-- 1 user user  941 Oct 31 23:32 get_mean_size.py
+-rw-rw-r-- 1 user user    0 Oct 31 23:34 ls.txt
+-rw-rw-r-- 1 user user 2956 Oct 31 01:31 README.md

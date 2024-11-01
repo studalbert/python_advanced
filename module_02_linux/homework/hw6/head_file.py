@@ -25,15 +25,21 @@ hello wo
 /home/user/module_2/docs/simple.txt 12
 hello world!
 """
+import os.path
 
 from flask import Flask
 
 app = Flask(__name__)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 @app.route("/head_file/<int:size>/<path:relative_path>")
 def head_file(size: int, relative_path: str):
-    ...
+    path = os.path.join(BASE_DIR, relative_path)
+    with open(path, 'r') as file:
+        res = file.read(size)
+        return f'<b>{path}</b> {len(res)}<br>{res}'
 
 
 if __name__ == "__main__":

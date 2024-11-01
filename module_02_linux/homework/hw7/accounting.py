@@ -21,17 +21,24 @@ storage = {}
 
 @app.route("/add/<date>/<int:number>")
 def add(date: str, number: int):
-    ...
+    year = int(date[:4])
+    month = int(date[4:6])
+    if storage.setdefault(year, {}).setdefault(month):
+        storage[year][month] += number
+    else:
+        storage[year][month] = number
+    storage[year]['total'] = sum(storage[year].values())
+    return f'Записано'
 
 
 @app.route("/calculate/<int:year>")
 def calculate_year(year: int):
-    ...
+    return f'{storage.setdefault(year, {}).setdefault('total')}'
 
 
 @app.route("/calculate/<int:year>/<int:month>")
 def calculate_month(year: int, month: int):
-    ...
+    return f'{storage.setdefault(year, {}).setdefault(month)}'
 
 
 if __name__ == "__main__":
