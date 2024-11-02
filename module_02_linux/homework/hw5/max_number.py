@@ -18,9 +18,17 @@ from flask import Flask
 app = Flask(__name__)
 
 
-@app.route("/max_number/...")
-def max_number():
-    ...
+@app.route("/max_number/<path:numbers>")
+def max_number(numbers):
+    numbers_list = numbers.split('/')
+    max_num = 0
+    for num in numbers_list:
+        try:
+            if float(num) > max_num:
+                max_num = float(num)
+        except ValueError:
+            return 'Неправильный ввод. Должны быть переданы только числа.', 404
+    return f'Максимальное переданное число: <i>{max_num}</i>'
 
 
 if __name__ == "__main__":

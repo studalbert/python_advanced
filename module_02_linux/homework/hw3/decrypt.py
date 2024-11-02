@@ -33,12 +33,28 @@ $ echo  ‘абраа..-.кадабра’ | python3 decrypt.py
 
 Команда echo выводит текст (в стандартный поток вывода).
 """
-
+import re
 import sys
 
 
 def decrypt(encryption: str) -> str:
-    ...
+    result = ''
+    count_point = 0
+    for sym in encryption[::-1]:
+        if sym != '.':
+            if count_point == 0:
+                result = sym + result
+            elif count_point == 1:
+                result = sym + result
+                count_point -= 1
+            elif count_point > 1:
+                count_point -= 2
+        elif sym == '.':
+            count_point += 1
+    if result:
+        return result
+    else:
+        return '<пустая строка>'
 
 
 if __name__ == '__main__':
