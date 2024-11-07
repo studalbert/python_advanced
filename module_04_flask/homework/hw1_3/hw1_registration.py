@@ -12,17 +12,20 @@
 from flask import Flask
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, StringField
+from wtforms.validators import InputRequired, Email, NumberRange
+
 from hw2_validators import number_length, NumberLength
 
 app = Flask(__name__)
 
 
 class RegistrationForm(FlaskForm):
-    email = StringField()
-    phone = IntegerField()
-    name = StringField()
-    address = StringField()
-    index = IntegerField()
+    email = StringField(validators=[InputRequired('Please enter the email'), Email('Incorrect email')])
+    phone = IntegerField(
+        validators=[InputRequired('Please enter the phone'), number_length(1000000000, 9999999999, 'Incorrect phone')])
+    name = StringField(validators=[InputRequired('Please enter the name')])
+    address = StringField(validators=[InputRequired('Please enter the address')])
+    index = IntegerField(validators=[InputRequired('Please enter the index')])
     comment = StringField()
 
 
