@@ -139,3 +139,8 @@ dmypy.json
 .swp
 
 prettifier.py
+/module_02_linux/materials/testing_file.py
+/module_04_flask/materials/get_requests_test_file.py
+/module_04_flask/materials/flask_post_test_file.py
+/module_04_flask/materials/flask_wtforms_test_file.py
+/module_04_flask/materials/test_wtforms_test_file.py
