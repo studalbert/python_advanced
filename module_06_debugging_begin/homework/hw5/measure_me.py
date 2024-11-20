@@ -6,17 +6,23 @@
 в начале и в конце которой пишется "Enter measure_me" и "Leave measure_me".
 Сконфигурируйте логгер, запустите программу, соберите логи и посчитайте среднее время выполнения функции measure_me.
 """
+
+import json
 import logging
 import random
 from typing import List
 
-logger = logging.getLogger(__name__)
+
+class JsonAdapter(logging.LoggerAdapter):
+    def process(self, msg, kwargs):
+        new_message = json.dumps(msg, ensure_ascii=False)
+        return new_message, kwargs
 
 
 def get_data_line(sz: int) -> List[int]:
     try:
         logger.debug("Enter get_data_line")
-        return [random.randint(-(2 ** 31), 2 ** 31 - 1) for _ in range(sz)]
+        return [random.randint(-(2**31), 2**31 - 1) for _ in range(sz)]
     finally:
         logger.debug("Leave get_data_line")
 
@@ -60,7 +66,14 @@ def measure_me(nums: List[int]) -> List[List[int]]:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level="DEBUG")
+    logging.basicConfig(
+        level="DEBUG",
+        filename="measure_me.log",
+        filemode="w",
+        format='{"time": "%(asctime)s.%(msecs)03d", "level": "%(levelname)s", "message": %(message)s}',
+        datefmt="%H:%M:%S",
+    )
+    logger = JsonAdapter(logging.getLogger(__name__))
     for it in range(15):
-        data_line = get_data_line(10 ** 3)
+        data_line = get_data_line(10**3)
         measure_me(data_line)

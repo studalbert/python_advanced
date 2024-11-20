@@ -15,12 +15,15 @@ def restore_tree(path_to_log_file: str) -> BinaryTreeNode:
 
 Примечание: гарантируется, что все значения, хранящиеся в бинарном дереве уникальны
 """
+
 import itertools
 import logging
 import random
+import re
 from collections import deque
 from dataclasses import dataclass
 from typing import Optional
+from unittest.mock import right
 
 logger = logging.getLogger("tree_walk")
 
@@ -56,7 +59,7 @@ def walk(root: BinaryTreeNode):
             queue.append(node.right)
 
 
-counter = itertools.count(random.randint(1, 10 ** 6))
+counter = itertools.count(random.randint(1, 10**6))
 
 
 def get_tree(max_depth: int, level: int = 1) -> Optional[BinaryTreeNode]:
@@ -71,7 +74,26 @@ def get_tree(max_depth: int, level: int = 1) -> Optional[BinaryTreeNode]:
 
 
 def restore_tree(path_to_log_file: str) -> BinaryTreeNode:
-    pass
+    tree_dict = dict()
+    with open(path_to_log_file, "r") as file:
+        for line in file:
+            if "Visiting" in line:
+                value = int(re.search(r"\d+", line).group())
+                if tree_dict.get(value) is None:
+                    tree_dict[value] = BinaryTreeNode(val=value)
+            elif "left" in line:
+                values = re.findall(r"\d+", line)
+                value1 = int(values[0])
+                value2 = int(values[1])
+                tree_dict[value2] = BinaryTreeNode(val=value2)
+                tree_dict[value1].left = tree_dict[value2]
+            elif "right" in line:
+                values = re.findall(r"\d+", line)
+                value1 = int(values[0])
+                value2 = int(values[1])
+                tree_dict[value2] = BinaryTreeNode(val=value2)
+                tree_dict[value1].right = tree_dict[value2]
+    return list(tree_dict.values())[0]
 
 
 if __name__ == "__main__":

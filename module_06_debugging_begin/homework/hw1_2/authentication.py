@@ -18,12 +18,27 @@
 import getpass
 import hashlib
 import logging
+import re
 
 logger = logging.getLogger("password_checker")
 
+words_set = set()
+
+
+def load_words_in_set():
+    words = "/home/user/Downloads/words"
+    with open(words, "r") as file:
+        for line in file:
+            if len(line.strip()) > 4:
+                words_set.add(line.strip().lower())
+
 
 def is_strong_password(password: str) -> bool:
-    return True
+    words_in_password = re.findall(r"[a-z]+", password.lower())
+    for word in words_in_password:
+        if word in words_set:
+            return True
+    return False
 
 
 def input_and_check_password() -> bool:
@@ -51,11 +66,17 @@ def input_and_check_password() -> bool:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(
+        level=logging.INFO,
+        filename="stderr.txt",
+        filemode="w",
+        format="%(asctime)s %(name)s %(levelname)s %(message)s",
+        datefmt="%H:%M:%S",
+    )
     logger.info("Вы пытаетесь аутентифицироваться в Skillbox")
     count_number: int = 3
     logger.info(f"У вас есть {count_number} попыток")
-
+    load_words_in_set()
     while count_number > 0:
         if input_and_check_password():
             exit(0)
