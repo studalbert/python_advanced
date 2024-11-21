@@ -1,0 +1,3 @@
+18:34:01 password_checker INFO Вы пытаетесь аутентифицироваться в Skillbox
+18:34:01 password_checker INFO У вас есть 3 попыток
+18:34:08 password_checker WARNING Вы ввели слишком слабый пароль
