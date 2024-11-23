@@ -1,9 +1,9 @@
 import logging
 import sys
 from utils import string_to_operator
+from logger_helper import get_logger
 
-logging.basicConfig(level="DEBUG", format="%(levelname)s | %(name)s | %(message)s")
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 def calc(args):

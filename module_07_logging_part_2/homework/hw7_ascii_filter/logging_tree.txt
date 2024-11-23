@@ -1,0 +1,18 @@
+<--""
+   Level WARNING
+   |
+   o   "app"
+   |   Level DEBUG
+   |   Propagate OFF
+   |   Handler <LevelFileHandler (DEBUG)>
+   |     Level DEBUG
+   |     Filter <logging_config.AsciiFilter object at 0x79391d76e210>
+   |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+   |
+   o   "utils"
+       Level DEBUG
+       Propagate OFF
+       Handler TimedRotatingFile '/home/user/PycharmProjects/python_advanced/module_07_logging_part_2/homework/hw7_ascii_filter/utils.log' when='H' interval=36000 backupCount=3
+         Level INFO
+         Filter <logging_config.AsciiFilter object at 0x79391d76e210>
+         Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None

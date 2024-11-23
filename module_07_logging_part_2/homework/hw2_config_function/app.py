@@ -2,8 +2,18 @@ import logging
 import sys
 from utils import string_to_operator
 
-logging.basicConfig(level="DEBUG", format="%(levelname)s | %(name)s | %(message)s")
 logger = logging.getLogger(__name__)
+
+
+def config_logging():
+    logger_base = logging.getLogger()
+    logger_base.setLevel("DEBUG")
+    custom_handler = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter(
+        fmt="%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s"
+    )
+    custom_handler.setFormatter(formatter)
+    logger_base.addHandler(custom_handler)
 
 
 def calc(args):
@@ -32,5 +42,6 @@ def calc(args):
 
 
 if __name__ == "__main__":
+    config_logging()
     # calc(sys.argv[1:])
     calc("2+3")
