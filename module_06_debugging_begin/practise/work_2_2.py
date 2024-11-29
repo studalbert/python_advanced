@@ -32,18 +32,19 @@ def bank_api(branch: str, person_id: int):
             return "Person not found", 404
 
 
+def practice_func(msg):
+    with open("invalid_error.log", "a") as fo:
+        fo.write(f"{msg}\n")
+
 @app.errorhandler(InternalServerError)
 def handle_exception(e: InternalServerError):
     original: Optional[Exception] = getattr(e, "original_exception", None)
 
     if isinstance(original, FileNotFoundError):
-        with open("invalid_error.log", "a") as fo:
-            fo.write(
-                    f"Tried to access {original.filename}. Exception info: {original.strerror}\n"
-            )
+        practice_func(f"Tried to access {original.filename}. Exception info: {original.strerror}")
+
     elif isinstance(original, OSError):
-        with open("invalid_error.log", "a") as fo:
-            fo.write(f"Unable to access a card. Exception info: {original.strerror}\n")
+        practice_func(f"Unable to access a card. Exception info: {original.strerror}")
 
     return "Internal server error", 500
 

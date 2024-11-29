@@ -1,0 +1,46 @@
+<--""
+   Level WARNING
+   |
+   o   "app"
+   |   Level DEBUG
+   |   Propagate OFF
+   |   Handler <CustomHTTPHandler (DEBUG)>
+   |     Level DEBUG
+   |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None
+   |
+   o<--"charset_normalizer"
+   |   Level NOTSET so inherits level WARNING
+   |   Handler <NullHandler (NOTSET)>
+   |
+   o<--"requests"
+   |   Level NOTSET so inherits level WARNING
+   |   Handler <NullHandler (NOTSET)>
+   |
+   o<--"urllib3"
+   |   Level NOTSET so inherits level WARNING
+   |   Handler <NullHandler (NOTSET)>
+   |   |
+   |   o<--"urllib3.connection"
+   |   |   Level NOTSET so inherits level WARNING
+   |   |
+   |   o<--"urllib3.connectionpool"
+   |   |   Level NOTSET so inherits level WARNING
+   |   |
+   |   o<--"urllib3.poolmanager"
+   |   |   Level NOTSET so inherits level WARNING
+   |   |
+   |   o<--"urllib3.response"
+   |   |   Level NOTSET so inherits level WARNING
+   |   |
+   |   o<--[urllib3.util]
+   |       |
+   |       o<--"urllib3.util.retry"
+   |           Level NOTSET so inherits level WARNING
+   |
+   o   "utils"
+       Level DEBUG
+       Propagate OFF
+       Handler TimedRotatingFile '/home/user/PycharmProjects/python_advanced/module_07_logging_part_2/homework/hw8_http_handler/utils.log' when='H' interval=36000 backupCount=3
+         Level INFO
+         Filter <logging_config.AsciiFilter object at 0x7a9e93f5d3d0>
+         Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)d | %(message)s' datefmt=None

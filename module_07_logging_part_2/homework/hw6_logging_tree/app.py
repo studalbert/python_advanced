@@ -1,9 +1,10 @@
 import logging
 import sys
 from utils import string_to_operator
+from logging_config import get_logger
+import logging_tree
 
-logging.basicConfig(level="DEBUG", format="%(levelname)s | %(name)s | %(message)s")
-logger = logging.getLogger(__name__)
+logger = get_logger("app")
 
 
 def calc(args):
@@ -33,4 +34,8 @@ def calc(args):
 
 if __name__ == "__main__":
     # calc(sys.argv[1:])
+    with open("logging_tree.txt", "w") as f:
+        f.write(logging_tree.format.build_description())
     calc("2+3")
+    calc("223")
+    calc("2.2")
