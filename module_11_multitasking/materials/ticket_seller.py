@@ -16,7 +16,7 @@ class Seller(threading.Thread):
         super().__init__()
         self.sem: threading.Semaphore = semaphore
         self.tickets_sold: int = 0
-        logger.info('Seller started work')
+        logger.info("Seller started work")
 
     def run(self) -> None:
         global TOTAL_TICKETS
@@ -28,8 +28,8 @@ class Seller(threading.Thread):
                     break
                 self.tickets_sold += 1
                 TOTAL_TICKETS -= 1
-                logger.info(f'{self.getName()} sold one;  {TOTAL_TICKETS} left')
-        logger.info(f'Seller {self.getName()} sold {self.tickets_sold} tickets')
+                logger.info(f"{self.name} sold one;  {TOTAL_TICKETS} left")
+        logger.info(f"Seller {self.name} sold {self.tickets_sold} tickets")
 
     def random_sleep(self) -> None:
         time.sleep(random.randint(0, 1))
@@ -47,5 +47,5 @@ def main() -> None:
         seller.join()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
