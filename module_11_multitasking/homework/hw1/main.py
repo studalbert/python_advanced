@@ -4,7 +4,7 @@ import random
 import time
 from typing import List
 
-logging.basicConfig(level='INFO')
+logging.basicConfig(level="INFO")
 logger: logging.Logger = logging.getLogger(__name__)
 
 
@@ -18,34 +18,27 @@ class Philosopher(threading.Thread):
 
     def run(self) -> None:
         while self.running:
-            logger.info(f'Philosopher {self.name} start thinking.')
+            logger.info(f"Philosopher {self.name} start thinking.")
             time.sleep(random.randint(1, 10))
-            logger.info(f'Philosopher {self.name} is hungry.')
-            try:
-                self.left_fork.acquire()
-                logger.info(f'Philosopher {self.name} acquired left fork')
+            logger.info(f"Philosopher {self.name} is hungry.")
+            with self.left_fork:
+                logger.info(f"Philosopher {self.name} acquired left fork")
                 if self.right_fork.locked():
                     continue
-                try:
-                    self.right_fork.acquire()
-                    logger.info(f'Philosopher {self.name} acquired right fork')
+                with self.right_fork:
+                    logger.info(f"Philosopher {self.name} acquired right fork")
                     self.dining()
-                finally:
-                    self.right_fork.release()
-            finally:
-                self.left_fork.release()
 
     def dining(self) -> None:
-        logger.info(f'Philosopher {self.name} starts eating.')
+        logger.info(f"Philosopher {self.name} starts eating.")
         time.sleep(random.randint(1, 10))
-        logger.info(f'Philosopher {self.name} finishes eating and leaves to think.')
+        logger.info(f"Philosopher {self.name} finishes eating and leaves to think.")
 
 
 def main() -> None:
     forks: List[threading.Lock] = [threading.Lock() for n in range(5)]
     philosophers: List[Philosopher] = [
-        Philosopher(forks[i % 5], forks[(i + 1) % 5])
-        for i in range(5)
+        Philosopher(forks[i % 5], forks[(i + 1) % 5]) for i in range(5)
     ]
     Philosopher.running = True
     for p in philosophers:
