@@ -11,11 +11,9 @@ defeated_enemies = [
 ]
 
 
-def remove_all_defeated_enemies(
-        c: sqlite3.Cursor,
-        defeated_enemies: List[str]
-) -> None:
-    ...
+def remove_all_defeated_enemies(c: sqlite3.Cursor, defeated_enemies: List[str]) -> None:
+    for name in defeated_enemies:
+        c.execute("DELETE FROM table_enemies WHERE name = ?", (name,))
 
 
 if __name__ == "__main__":
