@@ -1,26 +1,30 @@
 import sqlite3
 from typing import Any, Optional, List
+from flask_wtf import FlaskForm
+from wtforms.fields.simple import StringField
+from wtforms.validators import InputRequired
 
 DATA: List[dict] = [
-    {'id': 0, 'title': 'A Byte of Python', 'author': 'Swaroop C. H.'},
-    {'id': 1, 'title': 'Moby-Dick; or, The Whale', 'author': 'Herman Melville'},
-    {'id': 3, 'title': 'War and Peace', 'author': 'Leo Tolstoy'},
+    {"id": 0, "title": "A Byte of Python", "author": "Swaroop C. H."},
+    {"id": 1, "title": "Moby-Dick; or, The Whale", "author": "Herman Melville"},
+    {"id": 3, "title": "War and Peace", "author": "Leo Tolstoy"},
 ]
 
 
 class Book:
 
-    def __init__(self, id: int, title: str, author: str) -> None:
+    def __init__(self, id: int, title: str, author: str, counter: int) -> None:
         self.id: int = id
         self.title: str = title
         self.author: str = author
+        self.counter: int = counter
 
     def __getitem__(self, item: str) -> Any:
         return getattr(self, item)
 
 
 def init_db(initial_records: List[dict]) -> None:
-    with sqlite3.connect('table_books.db') as conn:
+    with sqlite3.connect("table_books.db") as conn:
         cursor: sqlite3.Cursor = conn.cursor()
         cursor.execute(
             """
@@ -36,7 +40,7 @@ def init_db(initial_records: List[dict]) -> None:
                 CREATE TABLE `table_books` (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     title TEXT, 
-                    author TEXT, 
+                    author TEXT 
                 )
                 """
             )
@@ -45,19 +49,62 @@ def init_db(initial_records: List[dict]) -> None:
                 INSERT INTO `table_books`
                 (title, author) VALUES (?, ?)
                 """,
-                [
-                    (item['title'], item['author'])
-                    for item in initial_records
-                ]
+                [(item["title"], item["author"]) for item in initial_records],
             )
 
 
 def get_all_books() -> List[Book]:
-    with sqlite3.connect('table_books.db') as conn:
+    with sqlite3.connect("table_books.db") as conn:
         cursor: sqlite3.Cursor = conn.cursor()
+        cursor.execute("update table_books set counter = COALESCE(counter,0) + 1;")
         cursor.execute(
             """
             SELECT * from `table_books`
             """
         )
         return [Book(*row) for row in cursor.fetchall()]
+
+
+def save_books(name, author):
+    with sqlite3.connect("table_books.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "insert into table_books (title, author) values (?,?);", (name, author)
+        )
+        conn.commit()
+
+
+def get_author_func(author):
+    with sqlite3.connect("table_books.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "update table_books set counter = COALESCE(counter,0) + 1 WHERE author = ?;",
+            (author,),
+        )
+        res = cursor.execute(
+            "SELECT * from table_books where author = ?", (author,)
+        ).fetchall()
+        return [Book(*result) for result in res]
+
+
+def book_id_view(id):
+    with sqlite3.connect("table_books.db") as conn:
+        cursor = conn.cursor()
+        if cursor.execute(
+            "select exists (select 1 from table_books where id = ?);", (id,)
+        ).fetchone()[0]:
+            cursor.execute(
+                "update table_books set counter = COALESCE(counter,0) + 1 WHERE id = ?;",
+                (id,),
+            )
+            res = cursor.execute(
+                "select * from table_books where id = ?", (id,)
+            ).fetchone()
+            return [Book(*res)]
+        else:
+            return 0
+
+
+class BooksForm(FlaskForm):
+    book_title = StringField(validators=[InputRequired()])
+    author_name = StringField(validators=[InputRequired()])

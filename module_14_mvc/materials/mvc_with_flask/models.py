@@ -2,9 +2,9 @@ import sqlite3
 from typing import Any, Optional, List
 
 DATA: List[dict] = [
-    {'id': 0, 'title': 'A Byte of Python', 'author': 'Swaroop C. H.'},
-    {'id': 1, 'title': 'Moby-Dick; or, The Whale', 'author': 'Herman Melville'},
-    {'id': 3, 'title': 'War and Peace', 'author': 'Leo Tolstoy'},
+    {"id": 0, "title": "A Byte of Python", "author": "Swaroop C. H."},
+    {"id": 1, "title": "Moby-Dick; or, The Whale", "author": "Herman Melville"},
+    {"id": 3, "title": "War and Peace", "author": "Leo Tolstoy"},
 ]
 
 
@@ -20,7 +20,7 @@ class Book:
 
 
 def init_db(initial_records: List[dict]) -> None:
-    with sqlite3.connect('table_books.db') as conn:
+    with sqlite3.connect("table_books.db") as conn:
         cursor: sqlite3.Cursor = conn.cursor()
         cursor.execute(
             """
@@ -28,7 +28,7 @@ def init_db(initial_records: List[dict]) -> None:
             WHERE type='table' AND name='table_books'; 
             """
         )
-        exists: Optional[tuple[str, ]] = cursor.fetchone()
+        exists: Optional[tuple[str,]] = cursor.fetchone()
         # now in `exist` we have tuple with table name if table really exists in DB
         if not exists:
             cursor.executescript(
@@ -45,15 +45,12 @@ def init_db(initial_records: List[dict]) -> None:
                 INSERT INTO `table_books`
                 (title, author) VALUES (?, ?)
                 """,
-                [
-                    (item['title'], item['author'])
-                    for item in initial_records
-                ]
+                [(item["title"], item["author"]) for item in initial_records],
             )
 
 
 def get_all_books() -> List[Book]:
-    with sqlite3.connect('table_books.db') as conn:
+    with sqlite3.connect("table_books.db") as conn:
         cursor: sqlite3.Cursor = conn.cursor()
         cursor.execute(
             """
@@ -61,3 +58,19 @@ def get_all_books() -> List[Book]:
             """
         )
         return [Book(*row) for row in cursor.fetchall()]
+
+
+def get_author_func(author):
+    with sqlite3.connect("table_books.db") as conn:
+        cursor = conn.cursor()
+        res = cursor.execute(
+            "SELECT * from table_books where author = ?", (author,)
+        ).fetchall()
+        return [Book(*result) for result in res]
+
+
+def get_number():
+    with sqlite3.connect("table_books.db") as conn:
+        cursor = conn.cursor()
+        res = cursor.execute("select count(1) from main.table_books").fetchone()[0]
+        return res
