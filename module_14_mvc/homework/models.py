@@ -1,7 +1,7 @@
 import sqlite3
 from typing import Any, Optional, List
 from flask_wtf import FlaskForm
-from wtforms.fields.simple import StringField
+from wtforms.fields.simple import StringField, SubmitField
 from wtforms.validators import InputRequired
 
 DATA: List[dict] = [
@@ -106,5 +106,6 @@ def book_id_view(id):
 
 
 class BooksForm(FlaskForm):
-    book_title = StringField(validators=[InputRequired()])
-    author_name = StringField(validators=[InputRequired()])
+    book_title = StringField("Book Title", validators=[InputRequired()])
+    author_name = StringField("Author name", validators=[InputRequired()])
+    submit = SubmitField("Add new book")

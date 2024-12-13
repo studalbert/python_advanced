@@ -1,10 +1,15 @@
 from flask import Flask, render_template, request
 from typing import List
-
+from flask_wtf.csrf import CSRFProtect
 from models import init_db, get_all_books, DATA, save_books, BooksForm, get_author_func
 from module_14_mvc.homework.models import book_id_view
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 app: Flask = Flask(__name__)
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+csrf = CSRFProtect(app)
 
 
 def _get_html_table_for_books(books: List[dict]) -> str:
@@ -42,8 +47,8 @@ def all_books() -> str:
 
 @app.route("/books/form", methods=["GET", "POST"])
 def get_books_form() -> str:
+    form = BooksForm()
     if request.method == "POST":
-        form = BooksForm()
         if form.validate_on_submit():
             name, author = form.book_title.data, form.author_name.data
             save_books(name, author)
@@ -51,11 +56,9 @@ def get_books_form() -> str:
                 "index.html",
                 books=get_all_books(),
             )
-        else:
-            return f"Invalid input, {form.errors}", 400
 
     elif request.method == "GET":
-        return render_template("add_book.html")
+        return render_template("add_book.html", form=form)
 
 
 @app.route("/books/<author>")
@@ -70,5 +73,4 @@ def view_counter(id: int):
 
 if __name__ == "__main__":
     init_db(DATA)
-    app.config["WTF_CSRF_ENABLED"] = False
     app.run(debug=True)
