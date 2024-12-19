@@ -12,9 +12,6 @@ app = Flask(__name__)
 
 @app.route("/room", methods=["GET"])
 def check():
-    # check_in = request.args.get("checkIN")
-    # check_out = request.args.get("checkOut")
-    # guests_num = request.args.get("guestsNum", type=int)
     return get_rooms()
 
 
