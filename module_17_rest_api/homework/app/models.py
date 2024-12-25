@@ -49,7 +49,7 @@ class Book:
 def init_db(initial_records: List[Dict]) -> None:
     with sqlite3.connect(DATABASE_NAME) as conn:
         cursor = conn.cursor()
-        cursor.execute("PRAGMA foreign_keys = ON")
+        cursor.executescript(ENABLE_FOREIGN_KEY)
         cursor.execute(
             f"""
                     SELECT name FROM sqlite_master
@@ -297,6 +297,7 @@ def get_books_by_author(author_id) -> list[Book]:
 def delete_author_by_id(author_id):
     with sqlite3.connect(DATABASE_NAME) as conn:
         cursor = conn.cursor()
+        cursor.executescript(ENABLE_FOREIGN_KEY)
         cursor.execute(
             f"""
             DELETE FROM {AUTHORS_TABLE_NAME}
