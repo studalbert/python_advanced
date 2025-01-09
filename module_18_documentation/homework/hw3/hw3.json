@@ -1,0 +1,75 @@
+{
+    "definitions": {
+        "Calc": {
+            "type": "object",
+            "required": ["jsonrpc", "method", "params", "id"],
+            "properties": {
+                "jsonrpc": {
+                    "type": "string",
+                    "default": "2.0",
+                    "pattern": "2.0"
+                },
+                "method": {
+                    "type": "string",
+                    "enum": ["calc.add", "calc.sub", "calc.mul", "calc.div"]
+                },
+                "params": {
+                    "type": "object",
+                    "required": ["a", "b"],
+                    "properties": {
+                        "a": {
+                            "type": "number"
+                        },
+                        "b": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "CalcResponse": {
+            "type": "object",
+            "properties": {
+                "id": {"type": "string"},
+                "jsonrpc": {"type": "string"},
+                "result": {"type": "number"}
+            }
+        }
+    },
+    "info": {
+        "title": "Calc",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "a and b",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Calc"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный результат",
+                        "schema": {
+                            "$ref": "#/definitions/CalcResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные параметры"
+                    }
+                },
+                "tags": ["calc"]
+            }
+        }
+    },
+    "swagger": "2.0"
+}
