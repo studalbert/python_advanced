@@ -1,12 +1,13 @@
 import operator
 from flask import Flask
 from flask_jsonrpc import JSONRPC
+from flasgger import Swagger
 
 app = Flask(__name__)
-jsonrpc = JSONRPC(app, '/api', enable_web_browsable_api=True)
+jsonrpc = JSONRPC(app, "/api", enable_web_browsable_api=True)
 
 
-@jsonrpc.method('calc.add')
+@jsonrpc.method("calc.add")
 def add(a: float, b: float) -> float:
     """
     Пример запроса:
@@ -37,5 +38,25 @@ def add(a: float, b: float) -> float:
     return operator.add(a, b)
 
 
-if __name__ == '__main__':
-    app.run('0.0.0.0', debug=True)
+@jsonrpc.method("calc.sub")
+def sub(a: float, b: float) -> float:
+    return operator.sub(a, b)
+
+
+@jsonrpc.method("calc.mul")
+def mul(a: float, b: float) -> float:
+    return operator.mul(a, b)
+
+
+@jsonrpc.method("calc.div")
+def div(a: float, b: float) -> float:
+    try:
+        return operator.truediv(a, b)
+    except ZeroDivisionError as e:
+        return {"error": str(e)}
+
+
+swagger = Swagger(app, template_file="hw3.json")
+
+if __name__ == "__main__":
+    app.run("0.0.0.0", debug=True)

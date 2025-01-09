@@ -1,0 +1,26 @@
+{
+    "tags": ["authors"],
+    "parameters": [
+        {
+            "name": "id",
+            "in": "path",
+            "type": "integer",
+            "required": "true",
+            "description": "The id of the author"
+        }
+    ],
+    "responses": {
+        "204": {
+            "description": "Author deleted succesfully"
+        },
+        "404": {
+            "description": "Resource not found",
+            "schema": {
+                "properties": {
+                    "data": {"example": "Resource not found", "type": "string"}
+                },
+                "type": "object"
+            }
+        }
+    }
+}

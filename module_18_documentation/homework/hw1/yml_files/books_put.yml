@@ -1,0 +1,22 @@
+This is an endpoint for changing the book by id.
+---
+tags:
+  - books_by_id
+parameters:
+ - in: path
+   name: id
+   required: true
+   type: integer
+   description: The id of the book to update
+ - in: body
+   name: new params for book
+   required: true
+   schema:
+     $ref: '#/definitions/Book'
+responses:
+  200:
+    description: Book data updated successfully
+    schema:
+      $ref: '#/definitions/Book'
+  400:
+    description: Validation Error

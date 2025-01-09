@@ -20,9 +20,9 @@ app = Flask(__name__)
 api = Api(app)
 
 spec = APISpec(
-    title='BooksList',
-    version='1.0.0',
-    openapi_version='2.0',
+    title="BooksList",
+    version="1.0.0",
+    openapi_version="2.0",
     plugins=[
         FlaskPlugin(),
         MarshmallowPlugin(),
@@ -64,6 +64,8 @@ class BookList(Resource):
            description: The book has been created
            schema:
              $ref: '#/definitions/Book'
+         400:
+           description: Validation Error
         """
         data = request.json
         schema = BookSchema()
@@ -82,9 +84,9 @@ template = spec.to_flasgger(
 )
 
 swagger = Swagger(app, template=template)
-api.add_resource(BookList, '/api/books')
+api.add_resource(BookList, "/api/books")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     init_db(initial_records=DATA)
     WSGIRequestHandler.protocol_version = "HTTP/1.1"
-    app.run('0.0.0.0', debug=True)
+    app.run("0.0.0.0", debug=True)

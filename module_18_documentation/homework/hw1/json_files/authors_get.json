@@ -1,0 +1,27 @@
+{
+    "tags": ["authors"],
+    "parameters": [
+        {
+            "name": "id",
+            "in": "path",
+            "type": "integer",
+            "required": "true",
+            "description": "The id of the author"
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "Author books",
+            "schema": {"type": "array", "items": {"$ref": "#/definitions/Book"}}
+        },
+        "404": {
+            "description": "Resource not found",
+            "schema": {
+                "properties": {
+                    "data": {"example": "Resource not found", "type": "string"}
+                },
+                "type": "object"
+            }
+        }
+    }
+}

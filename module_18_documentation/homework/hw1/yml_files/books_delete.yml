@@ -1,0 +1,21 @@
+This is an endpoint for delete the book by id.
+---
+tags:
+  - books_by_id
+parameters:
+ - in: path
+   name: id
+   required: true
+   type: integer
+   description: The id of the book to delete
+responses:
+  204:
+    description: Book deleted succesfully
+  404:
+    description: Book not found
+    schema:
+      type: object
+      properties:
+        data:
+          type: string
+          example: "Book not found"
