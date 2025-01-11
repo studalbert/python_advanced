@@ -29,7 +29,7 @@ SELECT purchase_amount,
        manager_id
 FROM orders
 GROUP BY manager_id,
-         purchase_amount
+         purchase_amount;
 SELECT city,
        avg(purchase_amount) avg_purchase
 FROM customer
