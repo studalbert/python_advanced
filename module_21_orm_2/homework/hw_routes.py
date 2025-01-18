@@ -189,16 +189,16 @@ def insert_students(file_path):
                 }
             )
     session.bulk_insert_mappings(Student, res_lst)
-    session.add(
-        Student(
-            name=name,
-            surname=surname,
-            phone=phone,
-            email=email,
-            average_score=average_score,
-            scholarship=scholarship,
-        )
-    )
+    # session.add(
+    #     Student(
+    #         name=name,
+    #         surname=surname,
+    #         phone=phone,
+    #         email=email,
+    #         average_score=average_score,
+    #         scholarship=scholarship,
+    #     )
+    # )
     session.commit()
     return "Студенты успешно добавлены", 201
 
