@@ -161,3 +161,6 @@ prettifier.py
 /module_18_documentation/homework/hw1/table_books.db
 /module_19_db4/practice/practice2.sql
 /module_21_orm_2/homework/check_file.csv
+/module_22_celery/homework/blur_img/
+/module_22_celery/homework/img/
+/module_22_celery/homework/blurred_images.zip
