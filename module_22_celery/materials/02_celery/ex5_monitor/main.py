@@ -17,5 +17,10 @@ def get_factorial(arg):
     print(result_value)
 
 
+get_factorial(50)
+# 608281864034267560872252163321295376887552831379210240000000000
+get_factorial("Сейчас будет ошибка")
+# 'str' object cannot be interpreted as an integer
+
 for i in range(100):
     get_factorial(10 * i)

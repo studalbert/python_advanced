@@ -8,8 +8,12 @@
 """
 
 # https://yandex.ru/support/mail/mail-clients/others.html
+import os
+from dotenv import load_dotenv
 
-SMTP_USER = "ПОЧТА ОТПРАВИТЕЛЯ"
-SMTP_HOST = "smtp.yandex.com"
-SMTP_PASSWORD = "ПАРОЛЬ ОТ ПОЧТЫ ОТПРАВИТЕЛЯ / СПЕЦИАЛЬНЫЙ ТОКЕН ПРИЛОЖЕНИЯ"
+load_dotenv()
+
+SMTP_USER = os.getenv("SMTP_USER")
+SMTP_HOST = "smtp.yandex.ru"
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 SMTP_PORT = 587
