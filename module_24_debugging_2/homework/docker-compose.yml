@@ -7,11 +7,6 @@ services:
     ports:
       - 5000:5000
 
-  generator:
-    build:
-      context: generator
-    stop_signal: SIGKILL
-
   prometheus:
     image: prom/prometheus:latest
     volumes:
