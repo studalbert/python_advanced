@@ -3,7 +3,7 @@ from typing import Dict, Optional
 from fastapi import FastAPI, Path, Query, Body
 from pydantic import Field, BaseModel
 
-app = FastAPI(openapi_tags=["Recipes"])
+app = FastAPI()
 
 
 @app.get("/async")
