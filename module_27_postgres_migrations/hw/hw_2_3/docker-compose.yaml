@@ -1,0 +1,12 @@
+version: '3.2'
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=hw2
+      - POSTGRES_PASSWORD=hw2
+      - POSTGRES_DB=skillbox_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db/:/var/lib/postgresql/data

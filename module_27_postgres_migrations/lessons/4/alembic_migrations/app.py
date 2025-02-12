@@ -1,14 +1,15 @@
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-engine = create_engine('postgresql://admin:admin@localhost')
+
+engine = create_engine("postgresql+psycopg2://admin:admin@localhost")
 Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
 
 
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = "user"
     id = Column(Integer, primary_key=True)
     name = Column(String(16), nullable=False)
     email = Column(String(60))
@@ -20,5 +21,5 @@ class User(Base):
         return f"{self.name}, {self.email}, {self.login}"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     Base.metadata.create_all(engine)

@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: app
+    stop_signal: SIGKILL
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+#    environment:
+#      - DATABASE_URL=postgresql://user:password@db:5432/mydatabase
+    networks:
+      - backend
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mydatabase
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db/:/var/lib/postgresql/data
+      - pg_logs:/var/log/postgresql
+#      - pg_data:/var/lib/postgresql/data
+#      - ./postgres/postgres.conf:/etc/postgresql/postgresql.conf
+    command: [
+      "postgres",
+      "-c", "log_destination=stderr",                  # Направление логов в stderr
+      "-c", "logging_collector=on",                    # Включение сборщика логов
+      "-c", "log_directory=/var/log/postgresql", # Путь к директории с логами
+      ]
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  pg_logs:
